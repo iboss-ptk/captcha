@@ -10,14 +10,19 @@ trait Generator {
   def next: Expression
 }
 
-class MathExpressionGenerator(random: Random = scala.util.Random) extends Generator {
-  override def next: MathExpression = {
+class AlgebraicExpressionGenerator(random: Random = scala.util.Random, depthBound: Int = 2) extends Generator {
+  override def next: AlgebraicExpression = {
       val operations = List('+', '-', '*')
-      val randomOperation = operations(random.nextInt(operations.length))
 
-      new MathExpression(
-        operation = randomOperation,
-        left = random.nextInt(10),
-        right = random.nextInt(10))
+      def nextDown(depthBound: Int): AlgebraicExpression = {
+        val randomOperation = operations(random.nextInt(operations.length))
+
+        AlgebraicExpression(
+          operation = randomOperation,
+          left = IntegerExpression(random.nextInt(10)),
+          right = IntegerExpression(random.nextInt(10)))
+      }
+
+    nextDown(depthBound)
   }
 }
