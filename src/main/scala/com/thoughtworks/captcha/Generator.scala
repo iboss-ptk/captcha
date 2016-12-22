@@ -1,8 +1,5 @@
 package com.thoughtworks.captcha
 
-import scala.util.Random
-
-
 /**
   * Created by supanat on 21/12/2016.
   */
@@ -10,17 +7,21 @@ trait Generator {
   def next: Expression
 }
 
-class AlgebraicExpressionGenerator(random: Random = scala.util.Random, depthBound: Int = 2) extends Generator {
+class AlgebraicExpressionGenerator(depthBound: Int = 1)
+  extends Generator
+    with Randomizer {
   override def next: AlgebraicExpression = {
-      val operations = List('+', '-', '*')
-
-      def nextDown(depthBound: Int): AlgebraicExpression = {
-        val randomOperation = operations(random.nextInt(operations.length))
+      def nextDown(depth: Int): AlgebraicExpression = {
+        def recurOrTerminate =
+          if(nextIsBranching() && depth > 0)
+            nextDown(depth - 1)
+          else
+            IntegerExpression(nextOperand())
 
         AlgebraicExpression(
-          operation = randomOperation,
-          left = IntegerExpression(random.nextInt(10)),
-          right = IntegerExpression(random.nextInt(10)))
+          operator = nextOperator(),
+          left = recurOrTerminate,
+          right = recurOrTerminate)
       }
 
     nextDown(depthBound)

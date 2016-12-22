@@ -54,12 +54,12 @@ class AlgebraicExpressionTest extends FunSuite with Matchers {
 
   test("expression asString should be 5 + 3") {
     val expression = AlgebraicExpression('+', IntegerExpression(5), IntegerExpression(3))
-    expression.asString shouldBe "5 + 3"
+    expression.toText shouldBe "5 + 3"
   }
 
   test("expression asString should be 7 - 2") {
     val expression = AlgebraicExpression('-', IntegerExpression(7), IntegerExpression(2))
-    expression.asString shouldBe "7 - 2"
+    expression.toText shouldBe "7 - 2"
   }
 
   test("expression asString should be 2 - (3 * 4)") {
@@ -69,7 +69,7 @@ class AlgebraicExpressionTest extends FunSuite with Matchers {
       AlgebraicExpression(
         '*', IntegerExpression(3), IntegerExpression(4)))
 
-    expression.asString shouldBe "2 - (3 * 4)"
+    expression.toText shouldBe "2 - (3 * 4)"
   }
 
   test("expression asString should be (3 * 4) - 2") {
@@ -79,7 +79,7 @@ class AlgebraicExpressionTest extends FunSuite with Matchers {
         '*', IntegerExpression(3), IntegerExpression(4)),
       IntegerExpression(2))
 
-    expression.asString shouldBe "(3 * 4) - 2"
+    expression.toText shouldBe "(3 * 4) - 2"
   }
 
   test("expression asString should be (3 * 4) + (2 + 1)") {
@@ -90,6 +90,6 @@ class AlgebraicExpressionTest extends FunSuite with Matchers {
       AlgebraicExpression(
         '+', IntegerExpression(2), IntegerExpression(1)))
 
-    expression.asString shouldBe "(3 * 4) + (2 + 1)"
+    expression.toText shouldBe "(3 * 4) + (2 + 1)"
   }
 }

@@ -5,27 +5,28 @@ package com.thoughtworks.captcha
   */
 trait Expression {
   def evaluate: Int
-  def asString: String
+  def toText: String
 }
 
 case class IntegerExpression(value: Int) extends Expression {
   override def evaluate: Int = value
-  override def asString: String = value.toString
+  override def toText: String = value.toString
 }
 
-case class AlgebraicExpression(operation: Char, left: Expression, right: Expression) extends Expression {
+case class AlgebraicExpression(operator: Char, left: Expression, right: Expression) extends Expression {
   val operationMap = Map(
     '+' -> ((left: Int, right: Int) => left + right),
     '-' -> ((left: Int, right: Int) => left - right),
     '*' -> ((left: Int, right: Int) => left * right)
   )
 
-  override def evaluate: Int = operationMap(operation)(left.evaluate, right.evaluate)
-  override def asString = {
+  override def evaluate: Int = operationMap(operator)(left.evaluate, right.evaluate)
+  override def toText = {
     def nestedString(expression: Expression): String = expression match {
-      case expr: AlgebraicExpression => s"(${expr.asString})"
-      case expr => expr.asString
+      case expr: AlgebraicExpression => s"(${expr.toText})"
+      case expr => expr.toText
     }
-    s"${nestedString(left)} $operation ${nestedString(right)}"
+    s"${nestedString(left)} $operator ${nestedString(right)}"
   }
 }
+

@@ -11,8 +11,8 @@ class IntegerExpressionTest extends FunSuite with Matchers {
     IntegerExpression(5).evaluate shouldBe 5
   }
 
-  test("asString should returns string of its own raw value") {
-    IntegerExpression(3).asString shouldBe "3"
-    IntegerExpression(5).asString shouldBe "5"
+  test("toText should returns string of its own raw value") {
+    IntegerExpression(3).toText shouldBe "3"
+    IntegerExpression(5).toText shouldBe "5"
   }
 }
