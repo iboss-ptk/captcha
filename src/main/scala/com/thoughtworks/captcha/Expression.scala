@@ -17,11 +17,11 @@ case class AlgebraicExpression(operator: Operator, left: Expression, right: Expr
   extends Expression {
   override def evaluate: Int = operator(left.evaluate, right.evaluate)
   override def toText = {
-    def nestedString(expression: Expression): String = expression match {
+    def nestedExprString(expression: Expression): String = expression match {
       case expr: AlgebraicExpression => s"(${expr.toText})"
       case expr => expr.toText
     }
-    s"${nestedString(left)} $operator ${nestedString(right)}"
+    s"${nestedExprString(left)} $operator ${nestedExprString(right)}"
   }
 }
 
