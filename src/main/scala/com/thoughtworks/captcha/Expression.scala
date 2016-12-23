@@ -13,14 +13,9 @@ case class IntegerExpression(value: Int) extends Expression {
   override def toText: String = value.toString
 }
 
-case class AlgebraicExpression(operator: Char, left: Expression, right: Expression) extends Expression {
-  val operationMap = Map(
-    '+' -> ((left: Int, right: Int) => left + right),
-    '-' -> ((left: Int, right: Int) => left - right),
-    '*' -> ((left: Int, right: Int) => left * right)
-  )
-
-  override def evaluate: Int = operationMap(operator)(left.evaluate, right.evaluate)
+case class AlgebraicExpression(operator: Operator, left: Expression, right: Expression)
+  extends Expression {
+  override def evaluate: Int = operator(left.evaluate, right.evaluate)
   override def toText = {
     def nestedString(expression: Expression): String = expression match {
       case expr: AlgebraicExpression => s"(${expr.toText})"
@@ -30,3 +25,9 @@ case class AlgebraicExpression(operator: Char, left: Expression, right: Expressi
   }
 }
 
+trait ExpressionDSL {
+  def e$(operator: Operator, left: Expression, right: Expression): AlgebraicExpression =
+    AlgebraicExpression(operator, left, right)
+
+  def n(number: Int) = IntegerExpression(number)
+}
